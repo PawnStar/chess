@@ -27,7 +27,7 @@ kae.initKeys()
 function update (time) {
   // Update animations
   TWEEN.update(time);
-  
+
   // Draw!
   renderer.render(scene, camera);
 
@@ -38,9 +38,8 @@ console.log(scene);
 
 // Load the model
 (async ()=>{
-  console.log('loading player')
   scene.add(await kae.createPlayer());
-  console.log('loaded')
+  scene.add(await kae.createMonster());
 
   document.querySelector('#loading').remove()
   document.querySelector('#container').style.display = 'block'

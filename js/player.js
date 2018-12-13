@@ -12,28 +12,9 @@ const updatePlayerPosition = ()=>{
   player.ref.position.set(pos.x, pos.y, pos.z)
 }
 
-window.kae._loadPlayer = async function loadPlayer(){
-  
-  const materials = await new Promise(function(resolve, reject){
-    var loader = new THREE.MTLLoader();
-    loader.load('./models/pawn.mtl', resolve, null, reject)
-  })
-  
-  const object = await new Promise(function(resolve, reject){
-    var loader = new THREE.OBJLoader();
-    loader.setMaterials(materials)
-    loader.load('./models/pawn.obj', resolve, null, reject)
-  })
-
-  object.castShadow = true
-  object.traverse( function( node ) { if ( node instanceof THREE.Mesh ) { node.castShadow = true; } } );
-
-  return object
-}
-
 window.kae.createPlayer = async function createPlayer(){
-  const model = await kae._loadPlayer()
-  
+  const model = await kae.util.loadModel('./models/pawn.obj','./models/pawn.mtl')
+
   // Default position center of board
   const boardSize = kae._boardSize
   const center = Math.floor(boardSize / 2)
@@ -41,7 +22,7 @@ window.kae.createPlayer = async function createPlayer(){
   player.ref = model
 
   updatePlayerPosition()
-  
+
   return model
 }
 
@@ -50,10 +31,10 @@ kae.direction = 0;
 const capPosition = pos=>{
   if(pos >= kae._boardSize)
     pos = kae._boardSize - 1
-  
+
   if(pos < 0)
     pos = 0
-  
+
   return pos
 }
 
@@ -97,7 +78,7 @@ const moveDir = index=>{
   };
   player._nextMove = null
 
-  
+
   const next = moveDirs[(index + kae.direction) % 4]()
   const world = kae.boardToWorldCoord(next[0], next[1])
   const current = {
@@ -106,7 +87,7 @@ const moveDir = index=>{
     z: player.ref.position.z
   }
 
-  
+
   new TWEEN.Tween(current)
     .to({x: world.x, y: world.y, z: world.z}, 350)
     .easing(TWEEN.Easing.Quadratic.Out)
