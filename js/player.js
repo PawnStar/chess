@@ -25,14 +25,14 @@ window.kae._loadPlayer = async function loadPlayer(){
     loader.load('./models/pawn.obj', resolve, null, reject)
   })
 
+  object.castShadow = true
+  object.traverse( function( node ) { if ( node instanceof THREE.Mesh ) { node.castShadow = true; } } );
+
   return object
 }
 
 window.kae.createPlayer = async function createPlayer(){
   const model = await kae._loadPlayer()
-  
-  // Cast shadow
-  player.castShadow = true;
   
   // Default position center of board
   const boardSize = kae._boardSize
