@@ -14,6 +14,8 @@ let monster = {
   target: null
 }
 
+let speedMod = 1
+
 kae.createMonster = async function createMonster(){
   const model = await kae.util.loadModel('./models/monster.obj','./models/monster.mtl')
 
@@ -32,18 +34,20 @@ const advanceMonsterState = function(){
   monster.state = states[next]
 
   if(monster.state === 'following')
-    setTimeout(advanceMonsterState, 3000)
+    setTimeout(advanceMonsterState, 3000 / speedMod)
 
   if(monster.state === 'rumbling'){
     monster.target = {...kae.getPlayerPosition()}
-    setTimeout(advanceMonsterState, 1500)
+    setTimeout(advanceMonsterState, 1500 / speedMod)
   }
 
   if(monster.state === 'leaping')
     kae.leapMonster()
 
-  if(monster.state === 'cooldown')
-    setTimeout(advanceMonsterState, 500)
+  if(monster.state === 'cooldown'){
+    speedMod += 1
+    setTimeout(advanceMonsterState, 500 / speedMod)
+  }
 }
 
 
@@ -76,7 +80,7 @@ kae.leapMonster = function leapMonster(){
   const target = monster.target
 
   new TWEEN.Tween(current)
-    .to({x: target.x, z: target.z}, 300)
+    .to({x: target.x, z: target.z}, 300 / speedMod)
     .easing(TWEEN.Easing.Quadratic.Out)
     .onUpdate(()=>{
       monster.model.position.set(current.x, 0, current.z)
