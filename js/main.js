@@ -28,6 +28,9 @@ function update (time) {
   // Update animations
   TWEEN.update(time);
 
+  // Update monster
+  kae.updateMonster()
+
   // Draw!
   renderer.render(scene, camera);
 

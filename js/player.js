@@ -6,6 +6,10 @@ let player = {
   ref: null
 }
 
+kae.getPlayerPosition = function getPlayerPosition(){
+  return player.ref.position
+}
+
 const updatePlayerPosition = ()=>{
   if(!player.ref) return;
   const pos = kae.boardToWorldCoord(player.position[0], player.position[1])

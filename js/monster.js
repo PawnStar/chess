@@ -13,9 +13,11 @@ kae.createMonster = async function createMonster(){
   model.position.set(position.x, position.y, position.z)
   monster.model = model
 
+  console.log(model)
+
   return model
 }
 
 kae.updateMonster = function updateMonster(){
-
+  monster.model.children[0].lookAt(kae.getPlayerPosition())
 }
