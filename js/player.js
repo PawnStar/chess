@@ -12,34 +12,37 @@ const updatePlayerPosition = ()=>{
   player.ref.position.set(pos.x, pos.y, pos.z)
 }
 
-window.kae.createPlayer = function createPlayer(){
-  // Set up the sphere vars
-  const RADIUS = 1;
-  const SEGMENTS = 16;
-  const RINGS = 16;// create the sphere's material
-  const sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xCC0000 });
+window.kae._loadPlayer = async function loadPlayer(){
+  
+  const materials = await new Promise(function(resolve, reject){
+    var loader = new THREE.MTLLoader();
+    loader.load('./models/pawn.mtl', resolve, null, reject)
+  })
+  
+  const object = await new Promise(function(resolve, reject){
+    var loader = new THREE.OBJLoader();
+    loader.setMaterials(materials)
+    loader.load('./models/pawn.obj', resolve, null, reject)
+  })
 
-  // Create a new mesh with
-  // sphere geometry - we will cover
-  // the sphereMaterial next!
-  const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(RADIUS, SEGMENTS, RINGS),
-    sphereMaterial
-  );
+  return object
+}
 
+window.kae.createPlayer = async function createPlayer(){
+  const model = await kae._loadPlayer()
   
   // Cast shadow
-  sphere.castShadow = true;
+  player.castShadow = true;
   
   // Default position center of board
   const boardSize = kae._boardSize
   const center = Math.floor(boardSize / 2)
   player.position = [center, center]
-  player.ref = sphere
+  player.ref = model
 
   updatePlayerPosition()
   
-  return sphere
+  return model
 }
 
 kae.direction = 0;
@@ -105,7 +108,7 @@ const moveDir = index=>{
 
   
   new TWEEN.Tween(current)
-    .to({x: world.x, y: world.y, z: world.z}, 400)
+    .to({x: world.x, y: world.y, z: world.z}, 350)
     .easing(TWEEN.Easing.Quadratic.Out)
     .onStart(()=>{canMove = false})
     .onUpdate(()=>{

@@ -19,7 +19,6 @@ const camera = kae.createCamera()
 scene.add(camera);
 scene.add(kae.createBoard(5))
 scene.add(kae.createLights());
-scene.add(kae.createPlayer());
 
 kae.updateCamera()
 kae.initKeys()
@@ -35,7 +34,13 @@ function update (time) {
   // Schedule the next frame.
   requestAnimationFrame(update);
 }
-console.log(scene)
+console.log(scene);
 
-// Schedule the first frame.
-requestAnimationFrame(update);
+// Load the model
+(async ()=>{
+  console.log('loading player')
+  scene.add(await kae.createPlayer());
+  console.log('loaded')
+
+  requestAnimationFrame(update)
+})()
