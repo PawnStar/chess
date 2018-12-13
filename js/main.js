@@ -28,6 +28,8 @@ window.addEventListener('resize', ()=>{
 kae.updateCamera()
 kae.initKeys()
 
+var playing = true
+
 // Render loop
 function update (time) {
   // Update animations
@@ -40,7 +42,8 @@ function update (time) {
   renderer.render(scene, camera);
 
   // Schedule the next frame.
-  requestAnimationFrame(update);
+  if(playing)
+    requestAnimationFrame(update);
 }
 console.log(scene);
 
@@ -50,7 +53,22 @@ console.log(scene);
   scene.add(await kae.createMonster());
 
   document.querySelector('#loading').remove()
-  document.querySelector('#container').style.display = 'block'
+  document.querySelector('#ready').style.display = 'block'
 
-  requestAnimationFrame(update)
+  const button = document.querySelector('#startGame')
+
+  if(button)
+    button.addEventListener('click', ()=>{
+      document.querySelector('#ready').remove()
+      document.querySelector('#container').style.display = 'block'
+      kae.startMonster()
+
+      requestAnimationFrame(update)
+    })
 })()
+
+kae.loseGame = ()=>{
+  playing = false
+  document.querySelector('#container').remove()
+  document.querySelector('#lose').style.display = 'block'
+}

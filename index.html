@@ -6,7 +6,26 @@
   </head>
   <body>
     <div id="container" style="display:none"></div>
-    <p id="loading">Loading . . .</p>
+    <p style="text-align: center; margin-top:20vh;" id="loading">Loading . . .</p>
+
+    <div id="ready" style="display:none; text-align: center; padding-top:20vh;">
+      <h2>Rules:</h2>
+      <ul style="width: 300px; margin: 0px auto; text-align: left">
+        <li>You are the chess piece</li>
+        <li>WASD to move</li>
+        <li>Q / E to rotate view</li>
+        <li>Don't let the monster touch you</li>
+      </ul>
+
+      <div style="height:30px;"></div>
+      <p>Ready to play?</p>
+      <button id="startGame">Start Game</button>
+    </div>
+
+    <div id="lose" style="display:none; text-align: center; padding-top:20vh;">
+      <p>You lose.  <a href="javascript:window.location.reload()">Try again.</a></p>
+    </div>
+
     <script src="./lib/three.min.js"></script>
     <script src="./lib/Tween.js"></script>
     <script src="./lib/examples/OrbitControls.js"></script>

@@ -23,16 +23,12 @@ kae.createMonster = async function createMonster(){
   monster.model = model
   // model.children[0].material = new THREE.MeshStandardMaterial({color: 0x3a0a00})
 
-  advanceMonsterState()
-
   return model
 }
 
 const advanceMonsterState = function(){
-  console.log('advancing')
   const current = states.indexOf(monster.state)
   const next = (current + 1) % states.length
-  console.log(current, next)
   monster.state = states[next]
 
   if(monster.state === 'following')
@@ -50,6 +46,11 @@ const advanceMonsterState = function(){
     setTimeout(advanceMonsterState, 500)
 }
 
+
+kae.startMonster = function(){
+  advanceMonsterState()
+}
+
 const rumble = function(){
   const x = (Math.random() * 2 - 1) / 10
   const z = (Math.random() * 2 - 1) / 10
@@ -64,6 +65,10 @@ kae.updateMonster = function updateMonster(){
 
   if(monster.state === 'rumbling')
     rumble()
+
+  // Check for collision
+  if(monster.model.position.distanceTo(kae.getPlayerPosition()) < 1)
+    kae.loseGame()
 }
 
 kae.leapMonster = function leapMonster(){
