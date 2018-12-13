@@ -39,24 +39,22 @@ window.kae.rotateRight = ()=>{
   let current = (thetaTarget!==null)? thetaTarget : kae._spherical.theta
   thetaTarget = current + Math.PI / 2
 
-  let rotate = new TWEEN.Tween(kae._spherical)
+  new TWEEN.Tween(kae._spherical)
     .to({ theta: thetaTarget }, 500)
     .easing(TWEEN.Easing.Quadratic.Out)
     .onUpdate(kae.updateCamera)
     .onStart(()=>kae.direction = (kae.direction + 3) % 4)
-    .start(); // Start the tween immediately.
-  console.log('rotate right')
+    .start();
 }
 
 window.kae.rotateLeft = ()=>{
   let current = (thetaTarget!==null)? thetaTarget : kae._spherical.theta
   thetaTarget = current - Math.PI / 2
 
-  let rotate = new TWEEN.Tween(kae._spherical)
+  new TWEEN.Tween(kae._spherical)
     .to({ theta: thetaTarget }, 500)
     .easing(TWEEN.Easing.Quadratic.Out)
     .onUpdate(kae.updateCamera)
     .onStart(()=>kae.direction = (kae.direction + 1) % 4)
-    .start(); // Start the tween immediately.
-  console.log('rotate left')
+    .start();
 }

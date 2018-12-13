@@ -17,7 +17,7 @@ const scene = new THREE.Scene();
 
 const camera = kae.createCamera()
 scene.add(camera);
-scene.add(kae.createBoard(15))
+scene.add(kae.createBoard(7))
 scene.add(kae.createLights());
 
 kae.updateCamera()
