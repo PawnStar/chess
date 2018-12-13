@@ -18,6 +18,7 @@ const updatePlayerPosition = ()=>{
 
 window.kae.createPlayer = async function createPlayer(){
   const model = await kae.util.loadModel('./models/pawn.obj','./models/pawn.mtl')
+  // model.children[0].material = new THREE.MeshStandardMaterial({color: 0x0899a5, metalness: 0})
 
   // Default position center of board
   const boardSize = kae._boardSize
@@ -91,7 +92,6 @@ const moveDir = index=>{
     z: player.ref.position.z
   }
 
-
   new TWEEN.Tween(current)
     .to({x: world.x, y: world.y, z: world.z}, 350)
     .easing(TWEEN.Easing.Quadratic.Out)
@@ -105,7 +105,7 @@ const moveDir = index=>{
       if(player._nextMove !== null)
         moveDir(player._nextMove)
     })
-    .start(); // Start the tween immediately.
+    .start();
 }
 
 kae.moveNorth = ()=>moveDir(0)

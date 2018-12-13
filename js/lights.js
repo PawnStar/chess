@@ -10,12 +10,12 @@ window.kae.createLights = function createLights(){
   lights.add(ambient)
 
   var spot = new THREE.SpotLight(0xFFFFFF);
-  spot.castShadow = true
+  // spot.castShadow = true
   spot.angle = Math.PI/7
-  spot.shadowDarkness = .7
-  spot.shadowMapWidth = 2000
-  spot.shadowMapHeight = 2000
-  spot.shadow.update(spot)
+  // spot.shadowDarkness = .7
+  // spot.shadowMapWidth = 700
+  // spot.shadowMapHeight = 700
+  // spot.shadow.update(spot)
   spot.name = 'spotlight'
   spot.position.set(15,15,0);
   spot.target.position.set(4,0,0);

@@ -1,6 +1,6 @@
 // Set the view size.
-var width = window.innerWidth - 3
-var height = window.innerHeight - 3
+var width = window.innerWidth
+var height = window.innerHeight
 
 // Get the DOM element to attach to
 const container = document.querySelector('#container');
@@ -19,6 +19,11 @@ const camera = kae.createCamera()
 scene.add(camera);
 scene.add(kae.createBoard(7))
 scene.add(kae.createLights());
+
+window.addEventListener('resize', ()=>{
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  kae.updateCamera()
+})
 
 kae.updateCamera()
 kae.initKeys()
