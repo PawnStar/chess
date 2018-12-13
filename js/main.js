@@ -8,7 +8,7 @@ const container = document.querySelector('#container');
 // Set up renderer
 const renderer = new THREE.WebGLRenderer();
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+renderer.shadowMap.type = THREE.PCFSoftShadPCowMap; // default THREE.PCFShadowMap
 renderer.setSize(width, height);
 container.appendChild(renderer.domElement);
 
@@ -17,7 +17,7 @@ const scene = new THREE.Scene();
 
 const camera = kae.createCamera()
 scene.add(camera);
-scene.add(kae.createBoard(5))
+scene.add(kae.createBoard(15))
 scene.add(kae.createLights());
 
 kae.updateCamera()
@@ -41,6 +41,9 @@ console.log(scene);
   console.log('loading player')
   scene.add(await kae.createPlayer());
   console.log('loaded')
+
+  document.querySelector('#loading').remove()
+  document.querySelector('#container').style.display = 'block'
 
   requestAnimationFrame(update)
 })()
