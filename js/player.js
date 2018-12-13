@@ -55,23 +55,27 @@ const capPosition = pos=>{
 }
 
 moveNorth = ()=>{
-  player.position[1] = capPosition(player.position[1] + 1)
-  updatePlayerPosition()
+  const next = [...player.position]
+  next[1] = capPosition(next[1] + 1)
+  return next
 }
 
 moveSouth = ()=>{
-  player.position[1] = capPosition(player.position[1] - 1)
-  updatePlayerPosition()
+  const next = [...player.position]
+  next[1] = capPosition(next[1] - 1)
+  return next
 }
 
 moveEast = ()=>{
-  player.position[0] = capPosition(player.position[0] - 1)
-  updatePlayerPosition()
+  const next = [...player.position]
+  next[0] = capPosition(next[0] - 1)
+  return next
 }
 
 moveWest = ()=>{
-  player.position[0] = capPosition(player.position[0] + 1)
-  updatePlayerPosition()
+  const next = [...player.position]
+  next[0] = capPosition(next[0] + 1)
+  return next
 }
 
 const moveDirs = [
@@ -81,8 +85,39 @@ const moveDirs = [
   moveWest
 ]
 
+let canMove = true
+player._nextMove = null
 const moveDir = index=>{
-  moveDirs[(index + kae.direction) % 4]()
+  if(!canMove) {
+    player._nextMove = index;
+    return;
+  };
+  player._nextMove = null
+
+  
+  const next = moveDirs[(index + kae.direction) % 4]()
+  const world = kae.boardToWorldCoord(next[0], next[1])
+  const current = {
+    x: player.ref.position.x,
+    y: player.ref.position.y,
+    z: player.ref.position.z
+  }
+
+  
+  new TWEEN.Tween(current)
+    .to({x: world.x, y: world.y, z: world.z}, 400)
+    .easing(TWEEN.Easing.Quadratic.Out)
+    .onStart(()=>{canMove = false})
+    .onUpdate(()=>{
+      player.ref.position.set(current.x, current.y, current.z)
+    })
+    .onComplete(()=>{
+      player.position = next
+      canMove = true
+      if(player._nextMove !== null)
+        moveDir(player._nextMove)
+    })
+    .start(); // Start the tween immediately.
 }
 
 kae.moveNorth = ()=>moveDir(0)
